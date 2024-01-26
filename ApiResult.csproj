@@ -8,6 +8,7 @@
     <PackageId>Phferreira.ApiResultToolkit</PackageId>
     <Company>Phferreira</Company>
     <Description>ApiResultToolkit: A robust and flexible helper library for handling API responses in .NET. It provides a fluent interface for executing asynchronous operations, validating data, and encapsulating success or failure results. Ideal for building clean and maintainable APIs.</Description>
+    <RepositoryUrl>https://github.com/phferreira13/ApiResult</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
