@@ -104,7 +104,7 @@ namespace ApiResult.Models
             return this;
         }
 
-        public virtual ApiResult<T> OnSucces(Action<T> action)
+        public virtual ApiResult<T> OnSucces(Action<T?> action)
         {
             if (IsSuccess)
             {
@@ -113,7 +113,7 @@ namespace ApiResult.Models
             return this;
         }
 
-        public virtual ApiResult<T> OnError(Action<string, EErrorType> action)
+        public virtual ApiResult<T> OnError(Action<string?, EErrorType> action)
         {
             if (!IsSuccess)
             {
