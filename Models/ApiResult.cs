@@ -33,6 +33,20 @@ namespace ApiResult.Models
             IsSuccess = true;
         }
 
+        public virtual async Task<ApiResult<T>> ExecuteAsync(Func<Task<T>> func)
+        {
+            try
+            {
+                var data = await func();
+                SetSuccess(data);
+            }
+            catch (Exception ex)
+            {
+                SetError(ex.Message, EErrorType.InternalServerError);
+            }
+            return this;
+        }
+
         public virtual async Task<ApiResult<T>> ExecuteAsync(Func<Task<T>> func, params Func<T, ValidationResult>[] validations)
         {
             try
@@ -56,20 +70,15 @@ namespace ApiResult.Models
             return this;
         }
 
-        public virtual async Task<ApiResult<T>> ExecuteAsync(Func<Task<T>> func, Func<T, bool>? validation = null)
+        public virtual async Task<ApiResult<T>> ExecuteAsync(Func<Task<T>> func, Func<T, bool> validation)
         {
             try
             {
                 var data = await func();
-                if (validation != null)
-                {
-                    if (validation(data))
-                        SetSuccess(data);
-                    else
-                        SetError("Validation failed", EErrorType.BadRequest);
-                }
-                else
+                if (validation(data))
                     SetSuccess(data);
+                else
+                    SetError("Validation failed", EErrorType.BadRequest);
             }
             catch (Exception ex)
             {
@@ -78,20 +87,15 @@ namespace ApiResult.Models
             return this;
         }
 
-        public virtual async Task<ApiResult<T>> ExecuteAsync(Func<Task<T>> func, Func<T, Task<bool>>? validation = null)
+        public virtual async Task<ApiResult<T>> ExecuteAsync(Func<Task<T>> func, Func<T, Task<bool>> validation)
         {
             try
             {
                 var data = await func();
-                if (validation != null)
-                {
-                    if (await validation(data))
-                        SetSuccess(data);
-                    else
-                        SetError("Validation failed", EErrorType.BadRequest);
-                }
-                else
+                if (await validation(data))
                     SetSuccess(data);
+                else
+                    SetError("Validation failed", EErrorType.BadRequest);
             }
             catch (Exception ex)
             {
