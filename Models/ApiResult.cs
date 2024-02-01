@@ -1,9 +1,4 @@
 ﻿using ApiResult.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApiResult.Models
 {
@@ -18,7 +13,7 @@ namespace ApiResult.Models
         public T? Data { get; set; }
         public bool IsSuccess { get; set; }
         public string? Message { get; set; }
-        public EErrorType ErrorType { get; set; }
+        public EErrorType? ErrorType { get; set; }
 
         private void SetError(string? message, EErrorType errorType)
         {
@@ -31,6 +26,7 @@ namespace ApiResult.Models
         {
             Data = data;
             IsSuccess = true;
+            ErrorType = null;
         }
 
         public virtual async Task<ApiResult<T>> ExecuteAsync(Func<Task<T>> func)
@@ -113,7 +109,7 @@ namespace ApiResult.Models
             return this;
         }
 
-        public virtual ApiResult<T> OnError(Action<string?, EErrorType> action)
+        public virtual ApiResult<T> OnError(Action<string?, EErrorType?> action)
         {
             if (!IsSuccess)
             {
